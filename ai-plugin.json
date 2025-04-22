@@ -1,0 +1,19 @@
+{
+    "schema_version": "v1",
+    "name_for_model": "notion_assistant_mcp",
+    "name_for_human": "Notion Assistant MCP",
+    "description_for_model": "Plugin for interacting with Notion to manage AI Product Ideas, Tasks, Projects, Contacts, and Notes. Supports creating, updating, querying, and appending content to Notion databases.",
+    "description_for_human": "Manage all your Notion databases with AI: create and update product ideas, tasks, notes, projects, and contacts directly from ChatGPT.",
+    "auth": {
+      "type": "service_http",
+      "authorization_type": "bearer"
+    },
+    "api": {
+      "type": "openapi",
+      "url": "https://alexfedotov.github.io/notion-assistant-mcp/openapi.yaml",
+      "has_user_authentication": false
+    },
+    "logo_url": "https://alexfedotov.github.io/notion-assistant-mcp/logo.png",
+    "contact_email": "alexandrefedotov94@gmail.com",
+    "legal_info_url": "https://yourdomain.com/legal"
+  }

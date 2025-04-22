@@ -1,0 +1,170 @@
+ 
+openapi: 3.1.0
+info:
+  title: Unified Notion Assistant
+  version: 2.1.0
+  description: A flexible plugin to manage Notion databases through MCP-compatible actions such as creating, updating, querying, and appending to entries.
+servers:
+  - url: https://api.notion.com/v1
+paths:
+  /pages:
+    post:
+      operationId: createEntry
+      summary: Create a new entry in a Notion database
+      x-openai-isConsequential: true
+      parameters:
+        - name: Notion-Version
+          in: header
+          required: true
+          schema:
+            type: string
+            example: 2022-06-28
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                parent:
+                  type: object
+                  description: |
+                    Notion parent object, requires database_id.
+                    # 'parent' is kept for flexibility and full MCP compatibility.
+                  properties:
+                    database_id:
+                      type: string
+                      enum:
+                        - 1d79521183d8802d956ee95a1bd403e2
+                        - 1bc9521183d88071a2a0d094efe8d781
+                        - 1bd9521183d88097af20c897c958901c
+                        - 1c19521183d88059b9b5e7ac283a137f
+                        - 1c69521183d880bcb449d6c558944cf9
+                properties:
+                  type: object
+                  description: |
+                    A flexible map of Notion property names to their corresponding Notion API property values.
+                    # 'properties' retained for compatibility and extensibility.
+                  additionalProperties: true
+      responses:
+        "200":
+          description: Entry created
+
+  /pages/{page_id}:
+    patch:
+      operationId: updateEntry
+      summary: Update an entry by page_id
+      x-openai-isConsequential: true
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+        - name: Notion-Version
+          in: header
+          required: true
+          schema:
+            type: string
+            example: 2022-06-28
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEntry'
+      responses:
+        "200":
+          description: Entry updated
+
+  /databases/{database_id}/query:
+    post:
+      operationId: queryEntryByTitle
+      summary: Query entries by title in a Notion database
+      parameters:
+        - in: path
+          name: database_id
+          required: true
+          schema:
+            type: string
+        - name: Notion-Version
+          in: header
+          required: true
+          schema:
+            type: string
+            example: 2022-06-28
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filter:
+                  type: object
+                  properties:
+                    property:
+                      type: string
+                      example: Name
+                    title:
+                      type: object
+                      properties:
+                        equals:
+                          type: string
+      responses:
+        "200":
+          description: Matching entries returned
+
+  /blocks/{block_id}/children:
+    patch:
+      operationId: appendBlockToEntry
+      summary: Append content blocks to an entry
+      x-openai-isConsequential: true
+      parameters:
+        - in: path
+          name: block_id
+          required: true
+          schema:
+            type: string
+        - name: Notion-Version
+          in: header
+          required: true
+          schema:
+            type: string
+            example: 2022-06-28
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppendBlock'
+      responses:
+        "200":
+          description: Block appended
+
+components:
+  schemas:
+    UpdateEntry:
+      type: object
+      properties:
+        archived:
+          type: boolean
+        properties:
+          type: object
+          description: |
+            A flexible map of Notion property names to their corresponding Notion API property values.
+            # 'properties' retained for compatibility and extensibility.
+          additionalProperties: true
+    AppendBlock:
+      type: object
+      properties:
+        children:
+          type: array
+          items:
+            type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []

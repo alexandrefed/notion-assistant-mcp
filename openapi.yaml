@@ -5,7 +5,7 @@ info:
   version: 2.1.0
   description: A flexible plugin to manage Notion databases through MCP-compatible actions such as creating, updating, querying, and appending to entries.
 servers:
-  - url: https://api.notion.com/v1
+  - url: https://alexandrefed.github.io/notion-assistant-mcp
 paths:
   /pages:
     post:

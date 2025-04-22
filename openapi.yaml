@@ -49,6 +49,10 @@ paths:
       responses:
         "200":
           description: Entry created
+          content:
+            application/json:
+              schema:
+                type: object
 
   /pages/{page_id}:
     patch:
@@ -76,6 +80,10 @@ paths:
       responses:
         "200":
           description: Entry updated
+          content:
+            application/json:
+              schema:
+                type: object
 
   /databases/{database_id}/query:
     post:
@@ -114,6 +122,10 @@ paths:
       responses:
         "200":
           description: Matching entries returned
+          content:
+            application/json:
+              schema:
+                type: object
 
   /blocks/{block_id}/children:
     patch:
@@ -141,6 +153,10 @@ paths:
       responses:
         "200":
           description: Block appended
+          content:
+            application/json:
+              schema:
+                type: object
 
 components:
   schemas:
